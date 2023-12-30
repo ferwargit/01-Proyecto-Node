@@ -50,9 +50,56 @@ app.get('/api/customers', async (req, res) => {
   }
 });
 
-app.post('/api/customers', (req, res) => {
+app.get('/api/customers/:id', async (req, res) => {
+  console.log({
+    requestParams: req.params,
+    requestQuery: req.query,
+  });
+  try {
+    const { id: customerId } = req.params;
+    console.log(customerId);
+    const customer = await Customer.findById(customerId);
+    console.log(customer);
+    if (!customer) {
+      return res.status(404).json({ message: 'Customer not found' });
+    } else {
+      res.json({ customer });
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.put('/api/customers/:id', async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const result = await Customer.replaceOne({ _id: customerId }, req.body);
+    console.log(result);
+    res.json({ updatedCount: result.modifiedCount });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.delete('/api/customers/:id', async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const result = await Customer.deleteOne({ _id: customerId });
+    res.json({ deletedCount: result.deletedCount });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
+app.post('/api/customers', async (req, res) => {
   console.log(req.body);
-  res.send(req.body);
+  const customer = new Customer(req.body);
+  try {
+    await customer.save();
+    res.status(201).json({ customer });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
 });
 
 app.post('/', (req, res) => {
