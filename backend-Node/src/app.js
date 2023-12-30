@@ -1,20 +1,24 @@
+// 1. Import modules
 const express = require('express');
-
 const mongoose = require('mongoose');
-mongoose.set('strictQuery', false);
-
+const cors = require('cors');
 const Customer = require('./models/customer');
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
+// 2. Configurations
+mongoose.set('strictQuery', false);
 if (process.env.NODE_ENV !== 'production') {
   require('dotenv').config();
 }
 
+// 3. Constants
 const PORT = process.env.PORT || 3000;
 const CONNECTION = process.env.CONNECTION;
+
+// 4. Initialize app
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const customers = [
   {
@@ -36,10 +40,12 @@ const customer = new Customer({
   industry: 'marketing',
 });
 
+// 5. Routes
 app.get('/', (req, res) => {
   res.send('Welcome!');
 });
 
+// 6. API endpoints
 app.get('/api/customers', async (req, res) => {
   console.log(await mongoose.connection.db.listCollections().toArray());
   try {
@@ -73,10 +79,15 @@ app.get('/api/customers/:id', async (req, res) => {
 app.put('/api/customers/:id', async (req, res) => {
   try {
     const customerId = req.params.id;
-    const result = await Customer.replaceOne({ _id: customerId }, req.body);
-    console.log(result);
-    res.json({ updatedCount: result.modifiedCount });
+    const customer = await Customer.findOneAndReplace(
+      { _id: customerId },
+      req.body,
+      { new: true }
+    );
+    console.log(customer);
+    res.json({ customer });
   } catch (error) {
+    console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 });
