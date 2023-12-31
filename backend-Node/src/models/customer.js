@@ -18,7 +18,12 @@ const customerSchema = new mongoose_1.Schema({
 // module.exports = mongoose.model('Customer', customerSchema);
 // 2.-Con Customer en app.ts
 // 1ra opción
-exports.default = (0, mongoose_1.model)('Customer', customerSchema);
+// export default model('Customer', customerSchema);
 // 2da opción
-// const Customer = model('Customer', customerSchema);
-// export default Customer;
+const Customer = (0, mongoose_1.model)('Customer', customerSchema);
+const c = new Customer({
+    name: 'test',
+    industry: 'test',
+});
+console.log(c.name);
+exports.default = Customer;
