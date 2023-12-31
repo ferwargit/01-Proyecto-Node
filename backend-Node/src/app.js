@@ -92,6 +92,22 @@ app.put('/api/customers/:id', async (req, res) => {
   }
 });
 
+app.patch('/api/customers/:id', async (req, res) => {
+  try {
+    const customerId = req.params.id;
+    const customer = await Customer.findOneAndUpdate(
+      { _id: customerId },
+      req.body,
+      { new: true }
+    );
+    console.log(customer);
+    res.json({ customer });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.delete('/api/customers/:id', async (req, res) => {
   try {
     const customerId = req.params.id;
