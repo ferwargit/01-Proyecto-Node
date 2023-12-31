@@ -130,6 +130,20 @@ app.patch('/api/orders/:id', async (req, res) => {
   }
 });
 
+app.get('/api/orders/:id', async (req, res) => {
+  try {
+    const result = await Customer.findOne({ 'orders._id': req.params.id });
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.delete('/api/customers/:id', async (req, res) => {
   try {
     const customerId = req.params.id;
