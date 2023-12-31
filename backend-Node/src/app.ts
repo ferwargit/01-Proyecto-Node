@@ -2,7 +2,8 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-import { Customer } from './models/customer';
+import Customer from './models/customer';
+// import { Customer } from './models/customer';
 
 // 2. Configurations
 mongoose.set('strictQuery', false);
