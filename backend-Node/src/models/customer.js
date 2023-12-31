@@ -1,7 +1,8 @@
 "use strict";
-// @ts-nocheck
-const mongoose = require('mongoose');
-const customerSchema = new mongoose.Schema({
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Customer = void 0;
+const mongoose_1 = require("mongoose");
+const customerSchema = new mongoose_1.Schema({
     name: {
         type: String,
         required: true,
@@ -10,8 +11,8 @@ const customerSchema = new mongoose.Schema({
     orders: [
         {
             description: String,
-            amountInCents: Number
+            amountInCents: Number,
         },
     ],
 });
-module.exports = mongoose.model('Customer', customerSchema);
+exports.Customer = (0, mongoose_1.model)('Customer', customerSchema);

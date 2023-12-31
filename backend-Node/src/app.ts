@@ -1,9 +1,8 @@
-// @ts-nocheck
 // 1. Import modules
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Customer = require('./models/customer');
+import { Customer } from './models/customer';
 
 // 2. Configurations
 mongoose.set('strictQuery', false);
