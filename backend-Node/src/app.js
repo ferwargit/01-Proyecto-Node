@@ -108,6 +108,28 @@ app.patch('/api/customers/:id', async (req, res) => {
   }
 });
 
+app.patch('/api/orders/:id', async (req, res) => {
+  console.log(req.params);
+  const orderId = req.params.id;
+  req.body._id = orderId;
+  try {
+    const result = await Customer.findOneAndUpdate(
+      { 'orders._id': orderId },
+      { $set: { 'orders.$': req.body } },
+      { new: true }
+    );
+    console.log(result);
+    if (result) {
+      res.json(result);
+    } else {
+      res.status(404).json({ message: 'Order not found' });
+    }
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 app.delete('/api/customers/:id', async (req, res) => {
   try {
     const customerId = req.params.id;
