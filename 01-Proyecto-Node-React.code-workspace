@@ -8,5 +8,7 @@
       "path": "../02-Proyecto-React"
     }
   ],
-  "settings": {}
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "02-Proyecto-React"
+  }
 }
